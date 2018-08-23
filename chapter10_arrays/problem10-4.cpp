@@ -35,3 +35,32 @@ int main()
     return 0;
 }
 
+int init_board()
+{
+    int arr[3][3];
+    for (int i=0; i<3; i++)
+    {
+        for (int j=0; j<3; j++)
+        {
+            arr[i][j] = 0;
+        }
+    }
+    return arr;
+}
+
+void display_board(int board[3][3])
+{
+    for (int i=0; i<3; i++)
+    {
+        cout << " - - - " << endl;
+        cout << "| " << board[i][0] << " | " << board[i][1] << " | " << board[i][2] << " | " << endl;
+    }
+    cout << " - - - " << endl;
+}
+
+void make_move(int board[][3], int player)
+{
+    int row = 0;
+    int col = 0;
+
+}
