@@ -14,6 +14,7 @@ float find_average(int arr[], int size);
 void display_array(int arr[], int size);
 
 
+// Note that this program currently only works for integer input values
 int main()
 {
 	int size = 50;
