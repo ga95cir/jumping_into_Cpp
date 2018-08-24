@@ -23,11 +23,21 @@ At start of game, maybe write a text to explain the rules.
 */
 int main()
 {
+    cout << '\n';
+    cout << "****************************************************" << endl;
+    cout << "*                                                  *" << endl;
+    cout << "*         Welcome to the tic-tac-toe game!         *" << endl;
+    cout << "* Player 1 has symbol X and player 2 has symbol O. *" << endl;
+    cout << "*                                                  *" << endl;
+    cout << "****************************************************" << endl;
+    cout << '\n';
+
     string board[3][3];
     init_board(board);
     display_board(board);
 
     int player = 1;
+    int round = 1;
     bool game = true;
     while (game)
     {
@@ -35,6 +45,13 @@ int main()
         game = check_win(board, game);
         display_board(board);
         player = change_player(player);
+        if (round==9)
+        {
+            cout << "It's a draw!" << endl;
+            count << '\n';
+            break;
+        }
+        round++;
     }
     return 0;
 }
