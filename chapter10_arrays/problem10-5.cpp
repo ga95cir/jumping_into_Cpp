@@ -37,6 +37,9 @@ int main()
     cin >> n;
     cout << '\n';
 
+    // Size has to be fixed by hand, since
+    // dynamic memory allocation is only covered
+    // in chapter 14.
     string board[100][100];
     init_board(board, n);
     display_board(board, n);
