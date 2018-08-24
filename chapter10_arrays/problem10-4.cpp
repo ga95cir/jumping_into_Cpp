@@ -11,10 +11,10 @@ won by either side before the entire grid is filled?
 #include <cstdlib>
 using namespace std;
 
-void init_board(int board[][3]);
-void display_board(int board[][3]);
-void make_move(int board[][3], int player);
-bool check_win(int board[][3], bool game);
+void init_board(string board[][3]);
+void display_board(string board[][3]);
+void make_move(string board[][3], int player);
+bool check_win(string board[][3], bool game);
 int change_player(int player);
 
 
@@ -23,118 +23,129 @@ At start of game, maybe write a text to explain the rules.
 */
 int main()
 {
-    int board[3][3];
+    string board[3][3];
     init_board(board);
+    display_board(board);
+
     int player = 1;
     bool game = true;
     while (game)
     {
-        display_board(board);
         make_move(board, player);
         game = check_win(board, game);
+        display_board(board);
         player = change_player(player);
     }
     return 0;
 }
 
-void init_board(int board[][3])
+void init_board(string board[][3])
 {
     for (int i=0; i<3; i++)
     {
         for (int j=0; j<3; j++)
         {
-            board[i][j] = 0;
+            board[i][j] = "-";
         }
     }
 }
 
-void display_board(int board[3][3])
+void display_board(string board[3][3])
 {
     for (int i=0; i<3; i++)
     {
-        cout << " - - - " << endl;
+        cout << " ----------- " << endl;
         cout << "| " << board[i][0] << " | " << board[i][1] << " | " << board[i][2] << " | " << endl;
     }
-    cout << " - - - " << endl;
+    cout << " ----------- " << endl;
 }
 
-void make_move(int board[][3], int player)
+void make_move(string board[][3], int player)
 {
     bool bo = true;
-    int row = 0;
-    int col = 0;
+    int row;
+    int col;
     while (bo)
     {
-        cout << "Player " << player << " please pick row: " << endl;
-        cin >> row;
-        cout << "and column: ";
-        cin >> col;
+        bool row_bool = true;
+        while (row_bool)
+        {
+            row_bool = false;
+            cout << "Player " << player << " please pick row 0, 1 or 2: " << endl;
+            cin >> row;
+            if (row!=0 && row!=1 && row!=2)
+            {
+                cout << "Invalid row! Row must be 0, 1 or 2!" << endl;
+                cout << "Please try again." << endl;
+                row_bool = true;
+                continue;
+            }
+        }
 
-        if (board[row][col]==1 || board[row][col]==2)
+        bool col_bool = true;
+        while (col_bool)
+        {
+            col_bool = false;
+            cout << "and column 0, 1 or 2: " << endl;
+            cin >> col;
+            if (col!=0 && col!=1 && col!=2)
+            {
+                cout << "Invalid column! Column must be 0, 1 or 2!" << endl;
+                cout << "Please try again." << endl;
+                col_bool = true;
+                continue;
+            }
+        }
+
+        if (board[row][col]=="X" || board[row][col]=="O")
         {
             cout << "Invalid move! Please try again!" << endl;
+            continue;                                               // continue takes you back to the beginning of while-loop
         }
-        else
+        else if (player==1)
         {
-            board[row][col] = player;
+            board[row][col] = "X";
             bo = false;
+            continue;
+        }
+        else if (player==2)
+        {
+            board[row][col] = "O";
+            bo = false;
+            continue;
         }
     }
 }
 
-bool check_win(int board[][3], bool game)
+bool check_win(string board[][3], bool game)
 {
-    int win;
-    int tie;
+    bool pl1_row0 = (board[0][0]=="X" && board[0][1]=="X" && board[0][2]=="X");
+    bool pl1_row1 = (board[1][0]=="X" && board[1][1]=="X" && board[1][2]=="X");
+    bool pl1_row2 = (board[2][0]=="X" && board[2][1]=="X" && board[2][2]=="X");
+    bool pl1_col0 = (board[0][0]=="X" && board[1][0]=="X" && board[2][0]=="X");
+    bool pl1_col1 = (board[0][1]=="X" && board[1][1]=="X" && board[2][1]=="X");
+    bool pl1_col2 = (board[0][2]=="X" && board[1][2]=="X" && board[2][2]=="X");
+    bool pl1_dia1 = (board[0][0]=="X" && board[1][1]=="X" && board[2][2]=="X");
+    bool pl1_dia2 = (board[2][0]=="X" && board[1][1]=="X" && board[0][2]=="X");
 
-    win = board[0][0] + board[0][1] + board[0][2];
-    if (win==3)
+    if (pl1_row0 || pl1_row1 || pl1_row2 || pl1_col0 || pl1_col1 || pl1_col2 || pl1_dia1 || pl1_dia2)
     {
         cout << "Player 1 wins!" << endl;
         game = false;
     }
-    if (win==6)
-    {
-        cout << "Player 2 wins!" << endl;
-        game = false;
-    }
-    win = board[1][0] + board[1][1] + board[1][2];
-    if (win==3)
-    {
-        cout << "Player 1 wins!" << endl;
-        game = false;
-    }
-    if (win==6)
-    {
-        cout << "Player 2 wins!" << endl;
-        game = false;
-    }
-    win = board[2][0] + board[2][1] + board[2][2];
-    if (win==3)
-    {
-        cout << "Player 1 wins!" << endl;
-        game = false;
-    }
-    if (win==6)
-    {
-        cout << "Player 2 wins!" << endl;
-        game = false;
-    }
 
-    for (int i=0; i<3; i++)
-    {
-        for (int j=0; j<3; j++)
-        {
-            if (board[i][j]==1 || board[i][j]==2)
-            {
-                tie += 1;
-            }
-        }
-    }
+    bool pl2_row0 = (board[0][0]=="O" && board[0][1]=="O" && board[0][2]=="O");
+    bool pl2_row1 = (board[1][0]=="O" && board[1][1]=="O" && board[1][2]=="O");
+    bool pl2_row2 = (board[2][0]=="O" && board[2][1]=="O" && board[2][2]=="O");
+    bool pl2_col0 = (board[0][0]=="O" && board[1][0]=="O" && board[2][0]=="O");
+    bool pl2_col1 = (board[0][1]=="O" && board[1][1]=="O" && board[2][1]=="O");
+    bool pl2_col2 = (board[0][2]=="O" && board[1][2]=="O" && board[2][2]=="O");
+    bool pl2_dia1 = (board[0][0]=="O" && board[1][1]=="O" && board[2][2]=="O");
+    bool pl2_dia2 = (board[2][0]=="O" && board[1][1]=="O" && board[0][2]=="O");
 
-    if (tie==9)
+    if (pl2_row0 || pl2_row1 || pl2_row2 || pl2_col0 || pl2_col1 || pl2_col2 || pl2_dia1 || pl2_dia2)
     {
-        cout << "It's a tie!" << endl;
+        cout << "Player 2 wins!" << endl;
         game = false;
     }
 
