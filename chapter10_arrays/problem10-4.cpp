@@ -19,7 +19,7 @@ int change_player(int player);
 
 
 /*
-At start of game, maybe write a text to explain the rules.
+Note: Bonus not yet implemented!
 */
 int main()
 {
